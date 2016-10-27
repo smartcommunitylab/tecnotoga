@@ -1,0 +1,41 @@
+{
+	"regions": ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"],
+	"types": [
+		{
+			"name": "Corte d'Appello",
+			"region": true
+		},
+		{
+			"name": "Corte di assise",
+			"region": true
+		},
+		{
+			"name": "Corte Suprema di Cassazione",
+			"region": false
+		},
+		{
+			"name": "Giudice di Pace",
+			"region": true
+		},
+		{
+			"name": "Tribunale",
+			"region": true
+		},
+		{
+			"name": "Consiglio di Stato",
+			"region": false
+		},
+		{
+			"name": "Commissione Regionali Tributarie",
+			"region": true
+		},
+		{
+			"name": "Commissione Provinciali Tributarie",
+			"region": true
+		},
+		{
+			"name": "TAR",
+			"region": true
+		}
+	]
+}
