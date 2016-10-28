@@ -1,26 +1,5 @@
 package it.smartcommunitylab.gipro.storage;
 
-import it.smartcommunitylab.gipro.common.Const;
-import it.smartcommunitylab.gipro.common.PasswordHash;
-import it.smartcommunitylab.gipro.common.TranslationHelper;
-import it.smartcommunitylab.gipro.common.Utils;
-import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
-import it.smartcommunitylab.gipro.exception.InvalidDataException;
-import it.smartcommunitylab.gipro.exception.NotVerifiedException;
-import it.smartcommunitylab.gipro.exception.NotRegisteredException;
-import it.smartcommunitylab.gipro.exception.RegistrationException;
-import it.smartcommunitylab.gipro.exception.UnauthorizedException;
-import it.smartcommunitylab.gipro.model.Notification;
-import it.smartcommunitylab.gipro.model.Poi;
-import it.smartcommunitylab.gipro.model.Professional;
-import it.smartcommunitylab.gipro.model.Registration;
-import it.smartcommunitylab.gipro.model.ServiceApplication;
-import it.smartcommunitylab.gipro.model.ServiceOffer;
-import it.smartcommunitylab.gipro.model.ServiceRequest;
-import it.smartcommunitylab.gipro.push.NotificationManager;
-import it.smartcommunitylab.gipro.security.DataSetInfo;
-import it.smartcommunitylab.gipro.security.Token;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -36,6 +15,26 @@ import org.springframework.data.mongodb.core.index.GeospatialIndex;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+
+import it.smartcommunitylab.gipro.common.Const;
+import it.smartcommunitylab.gipro.common.PasswordHash;
+import it.smartcommunitylab.gipro.common.TranslationHelper;
+import it.smartcommunitylab.gipro.common.Utils;
+import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.NotRegisteredException;
+import it.smartcommunitylab.gipro.exception.NotVerifiedException;
+import it.smartcommunitylab.gipro.exception.RegistrationException;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
+import it.smartcommunitylab.gipro.model.Notification;
+import it.smartcommunitylab.gipro.model.Poi;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.model.ServiceApplication;
+import it.smartcommunitylab.gipro.model.ServiceOffer;
+import it.smartcommunitylab.gipro.model.ServiceRequest;
+import it.smartcommunitylab.gipro.push.NotificationManager;
+import it.smartcommunitylab.gipro.security.DataSetInfo;
+import it.smartcommunitylab.gipro.security.Token;
 
 public class RepositoryManager {
 	private static final transient Logger logger = LoggerFactory.getLogger(RepositoryManager.class);
@@ -935,11 +934,11 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
-			throw new NotRegisteredException("confirmationKey not found");
+			throw new NotRegisteredException("confirmUser: confirmationKey not found  "+confirmationKey);
 		}
-		if(dbRegistration.getConfirmationDeadline().before(now)) {
-			throw new InvalidDataException("confirmationKey exipired");
-		}
+//		if(dbRegistration.getConfirmationDeadline().before(now)) {
+//			throw new InvalidDataException("confirmationKey exipired");
+//		}
 		Update update = new Update();
 		update.set("confirmed", Boolean.TRUE);
 		update.set("confirmationKey", null);
@@ -958,7 +957,7 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
-			throw new NotRegisteredException("confirmationKey not found");
+			throw new NotRegisteredException("resendConfirm: confirmationKey not found for user "+cf);
 		}
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DATE, 1);
@@ -979,7 +978,7 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
-			throw new NotRegisteredException("confirmationKey not found");
+			throw new NotRegisteredException("resetPassword: confirmationKey not found for user "+cf);
 		}
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DATE, 1);
@@ -1007,7 +1006,7 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Registration dbRegistration = mongoTemplate.findOne(query, Registration.class);
 		if(dbRegistration == null) {
-			throw new NotRegisteredException("confirmationKey not found");
+			throw new NotRegisteredException("updatePassword: confirmationKey not found for user "+cf);
 		}
 		try {
 			String newPassword = PasswordHash.createHash(password);

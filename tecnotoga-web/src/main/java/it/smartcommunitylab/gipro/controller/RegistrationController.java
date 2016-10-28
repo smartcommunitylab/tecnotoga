@@ -3,6 +3,7 @@ package it.smartcommunitylab.gipro.controller;
 import it.smartcommunitylab.gipro.common.Utils;
 import it.smartcommunitylab.gipro.converter.Converter;
 import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.InvalidDataException;
 import it.smartcommunitylab.gipro.exception.NotRegisteredException;
 import it.smartcommunitylab.gipro.exception.RegistrationException;
 import it.smartcommunitylab.gipro.exception.UnauthorizedException;
@@ -110,6 +111,10 @@ public class RegistrationController {
 		Registration registration = Converter.convertProfessionalToRegistration(profile, password, lang);
 		if (StringUtils.hasText(cellPhone)) {
 			registration.setCellPhone(cellPhone);
+		}
+		if (StringUtils.isEmpty(profile.getMail())) {
+			logger.error(String.format("register - profile without email:%s", cf));
+			throw new InvalidDataException("profile without email");
 		}
 		Registration result = storageManager.registerUser(registration);
 		mailSender.sendConfirmationMail(result);
