@@ -87,7 +87,8 @@ angular.module('toga.services.login', [])
 		NO_CONNECTION: 1,
 		NO_USER: 2,
         NOT_VERIFIED: 3,
-        INVALID_CREDENTIALS: 4
+        INVALID_CREDENTIALS: 4,
+        INVALID_EMAIL: 5
 	};
 
 	loginService.logout = function () {
@@ -129,6 +130,8 @@ angular.module('toga.services.login', [])
 			function (reason) {
 				if (reason.data && reason.data.errorType == 'UnauthorizedException') {
 					deferred.reject(loginService.USER_ERRORS.INVALID_CREDENTIALS);
+                } else if (reason.data && reason.data.errorType == 'InvalidDataException') {
+					deferred.reject(loginService.USER_ERRORS.INVALID_EMAIL);
 				} else {
 					deferred.reject(loginService.USER_ERRORS.NO_CONNECTION);
 				}
