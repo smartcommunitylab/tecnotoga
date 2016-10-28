@@ -238,4 +238,10 @@ public class RegistrationController {
 	public Map<String,String> handleGenericError(HttpServletRequest request, Exception exception) {
 		return Utils.handleError(exception);
 	}
+	@ExceptionHandler(InvalidDataException.class)
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public Map<String,String> handleInvalidDataError(HttpServletRequest request, Exception exception) {
+		return Utils.handleError(exception);
+	}
 }
