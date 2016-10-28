@@ -83,7 +83,8 @@ public class RegistrationController {
 //			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
-			logger.error(String.format("login error [%s]:%s", cf, e.getMessage()));
+			e.printStackTrace();
+			logger.error(String.format("login error [%s]:%s", cf, e.getMessage()), e);
 			throw e;//new UnauthorizedException("profile not found, generic exception");
 		}
 	}
