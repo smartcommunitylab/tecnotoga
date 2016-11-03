@@ -111,8 +111,8 @@ public class EntityController {
 			throw new UnauthorizedException("profile not found: " + professionalId);
 		}
 		notificationManager.registerUser(profile.getObjectId(), registrationId, platform);
-		if(logger.isInfoEnabled()) {
-			logger.info(String.format("registerPush[%s]:%s", applicationId, registrationId));
+		if(logger.isDebugEnabled()) {
+			logger.debug(String.format("registerPush[%s]:%s", applicationId, registrationId));
 		}
 	}
 
