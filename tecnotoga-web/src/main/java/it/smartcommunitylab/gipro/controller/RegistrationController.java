@@ -68,6 +68,7 @@ public class RegistrationController {
 			Model model, HttpServletRequest request, HttpServletResponse response)
 					throws Exception {
 		try {
+			logger.info(String.format("login - start: %s", cf));
 			Professional profile = cnfService.getProfile(applicationId, cf);
 			if(profile == null) {
 				logger.error(String.format("login - CNF profile not found: %s", cf));
@@ -83,7 +84,6 @@ public class RegistrationController {
 //			permissionsManager.authenticateByCF(request, response, profile);
 			return profile;
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error(String.format("login error [%s]:%s", cf, e.getMessage()), e);
 			throw e;//new UnauthorizedException("profile not found, generic exception");
 		}
@@ -103,7 +103,9 @@ public class RegistrationController {
 			@RequestParam(required=false) String name,
 			@RequestParam(required=false) String surname,
 			@RequestParam(required=false) String cellPhone,
-			HttpServletResponse res) throws Exception {
+			HttpServletResponse res) throws Exception 
+	{
+		logger.info(String.format("registration - start: %s", cf));
 		Professional profile = cnfService.getProfile(applicationId, cf);
 		if(profile == null) {
 			logger.error(String.format("register - profile not found:%s", cf));
@@ -124,6 +126,7 @@ public class RegistrationController {
 	@RequestMapping(value = "/confirm", method = RequestMethod.GET)
 	public ModelAndView confirm(Model model, @RequestParam String confirmationCode, HttpServletRequest req) {
 		try {
+			logger.info(String.format("confirm - start: %s", confirmationCode));
 			Registration confirmUser = storageManager.confirmUser(confirmationCode);
 			Professional professional = Converter.convertRegistrationToProfessional(confirmUser);
 			Professional profile = cnfService.getProfile(professional.getApplicationId(),	professional.getCf());
@@ -149,6 +152,7 @@ public class RegistrationController {
 	@RequestMapping(value = "/resend", method = RequestMethod.POST)
 	public ModelAndView resendConfirm(Model model, @RequestParam String cf) {
 		try {
+			logger.info(String.format("resendConfirm - start: %s", cf));
 			Registration result = storageManager.resendConfirm(cf);
 			mailSender.sendConfirmationMail(result);
 			return new ModelAndView("registration/regsuccess");
@@ -168,6 +172,7 @@ public class RegistrationController {
 	public ModelAndView reset(Model model, @RequestParam String cf,
 			HttpServletRequest req) {
 		try {
+			logger.info(String.format("reset - start: %s", cf));
 			Registration result = storageManager.resetPassword(cf);
 			req.getSession().setAttribute("changePwdCF", result.getMail());
 			req.getSession().setAttribute("confirmationCode", result.getConfirmationKey());
@@ -196,6 +201,7 @@ public class RegistrationController {
 			@RequestParam String password,
 			HttpServletRequest req) {
 		try {
+			logger.info(String.format("updatePassword - start: %s", cf));
 			storageManager.updatePassword(cf, password, confirmationCode);
 		} catch (Exception e) {
 			logger.error("changepwd:" + e.getMessage());

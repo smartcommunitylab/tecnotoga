@@ -1030,7 +1030,7 @@ public class RepositoryManager {
 		Query query = new Query(criteria);
 		Registration registration = mongoTemplate.findOne(query, Registration.class);
 		if (registration == null) {
-			throw new NotRegisteredException();
+			throw new NotRegisteredException("No user found for cf "+cf);
 		}
 
 		criteria = new Criteria("applicationId").is(applicationId)
@@ -1039,7 +1039,7 @@ public class RepositoryManager {
 		query = new Query(criteria);
 		registration = mongoTemplate.findOne(query, Registration.class);
 		if(registration == null) {
-			throw new NotVerifiedException();
+			throw new NotVerifiedException("User not found or not verified: "+cf);
 		}
 		boolean matches = PasswordHash.validatePassword(password, registration.getPassword());
 		if (!matches) {
