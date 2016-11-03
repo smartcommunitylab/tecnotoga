@@ -83,8 +83,8 @@ public class CNF {
 		GetMethod getMethod = new GetMethod(url + cf);
 		try {
 			int statusCode = httpClient.executeMethod(getMethod);
-			if(logger.isInfoEnabled()) {
-				logger.info(String.format("getProfile[%s]:%s", cf, String.valueOf(statusCode)));
+			if(logger.isDebugEnabled()) {
+				logger.debug(String.format("getProfile[%s]:%s", cf, String.valueOf(statusCode)));
 			}
 			if((statusCode >= 200) && (statusCode < 300)) {
 				Document xmlDoc = this.documentBuilder.parse(getMethod.getResponseBodyAsStream());
