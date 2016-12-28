@@ -96,6 +96,9 @@ public class EntityController {
 			logger.error(String.format("cnf profile not found:%s", professionalId));
 			throw new UnauthorizedException("cnf profile not found: " + professionalId);
 		}
+		storageManager.updateProfessionalFromExternal(applicationId, professionalId, cnfProfile);
+		profile = storageManager.findProfessionalById(applicationId, professionalId);
+
 		return profile;
 	}
 

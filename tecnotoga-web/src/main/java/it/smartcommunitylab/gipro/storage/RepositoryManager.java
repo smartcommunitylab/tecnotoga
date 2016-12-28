@@ -186,6 +186,26 @@ public class RepositoryManager {
 		}
 	}
 
+	public void updateProfessionalFromExternal(String applicationId, String objectId, Professional cnfProfile) {
+		Criteria criteria = new Criteria("applicationId").is(applicationId)
+				.and("objectId").is(objectId);
+		Query query = new Query(criteria);
+		Professional profile = mongoTemplate.findOne(query, Professional.class);
+		if(profile != null) {
+			Date now = new Date();
+			Update update = new Update();
+			update.set("address", cnfProfile.getAddress());
+			update.set("fax", cnfProfile.getFax());
+			update.set("piva", cnfProfile.getPiva());
+			update.set("type", cnfProfile.getType());
+			update.set("mail", cnfProfile.getMail());
+			update.set("pec", cnfProfile.getPec());
+			update.set("customProperties", cnfProfile.getCustomProperties());
+			update.set("lastUpdate", now);
+			mongoTemplate.updateFirst(query, update, Professional.class);
+		}
+	}
+
 	private void updateProfessionalPasswordByCF(String applicationId, String cf, String passwordHash) {
 		Criteria criteria = new Criteria("applicationId").is(applicationId)
 				.and("cf").is(cf);

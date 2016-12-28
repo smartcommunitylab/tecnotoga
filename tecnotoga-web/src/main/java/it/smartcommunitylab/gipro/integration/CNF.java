@@ -114,7 +114,6 @@ public class CNF {
 				professional.setName(getName(nominativo));
 				professional.setSurname(getSurname(nominativo));
 				professional.setAddress(address);
-				//TODO use cfCnf
 				professional.setCf(cfCnf);
 				professional.setType(qualifica.trim());
 				professional.getCustomProperties().put(Const.LawyerDataNascita, dataNascita);
@@ -138,15 +137,14 @@ public class CNF {
 		Professional professional = new Professional();
 		professional.setApplicationId(applicationId);
 		professional.setMail("togatest@smartcommunitylab.it");
-		professional.setPec("pec@test.com");
+		professional.setPec("togatest@smartcommunitylab.it");
 		professional.setPhone("123456789");
 		professional.setFax("987654321");
 		professional.setName("Mario");
 		professional.setSurname("Rossi");
 		professional.setAddress("via Verdi, 1, 12345, Roma");
-		//TODO use cfCnf
 		professional.setCf(TESTCF);
-		professional.setType("Qualifica");
+		professional.setType("Avvocato");
 		professional.getCustomProperties().put(Const.LawyerDataNascita, "01/01/1971");
 		professional.getCustomProperties().put(Const.LawyerLuogoNascita, "Roma");
 		professional.getCustomProperties().put(Const.LawyerOrdineCompetenza, "ROMA");

@@ -1,21 +1,5 @@
 package it.smartcommunitylab.gipro.controller;
 
-import it.smartcommunitylab.gipro.common.Utils;
-import it.smartcommunitylab.gipro.converter.Converter;
-import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
-import it.smartcommunitylab.gipro.exception.InvalidDataException;
-import it.smartcommunitylab.gipro.exception.NotRegisteredException;
-import it.smartcommunitylab.gipro.exception.RegistrationException;
-import it.smartcommunitylab.gipro.exception.UnauthorizedException;
-import it.smartcommunitylab.gipro.exception.WrongRequestException;
-import it.smartcommunitylab.gipro.integration.CNF;
-import it.smartcommunitylab.gipro.mail.MailSender;
-import it.smartcommunitylab.gipro.model.Professional;
-import it.smartcommunitylab.gipro.model.Registration;
-import it.smartcommunitylab.gipro.security.JwtUtils;
-import it.smartcommunitylab.gipro.security.PermissionsManager;
-import it.smartcommunitylab.gipro.storage.RepositoryManager;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +21,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import it.smartcommunitylab.gipro.common.Utils;
+import it.smartcommunitylab.gipro.converter.Converter;
+import it.smartcommunitylab.gipro.exception.AlreadyRegisteredException;
+import it.smartcommunitylab.gipro.exception.InvalidDataException;
+import it.smartcommunitylab.gipro.exception.RegistrationException;
+import it.smartcommunitylab.gipro.exception.UnauthorizedException;
+import it.smartcommunitylab.gipro.exception.WrongRequestException;
+import it.smartcommunitylab.gipro.integration.CNF;
+import it.smartcommunitylab.gipro.mail.MailSender;
+import it.smartcommunitylab.gipro.model.Professional;
+import it.smartcommunitylab.gipro.model.Registration;
+import it.smartcommunitylab.gipro.security.JwtUtils;
+import it.smartcommunitylab.gipro.storage.RepositoryManager;
+
 @Controller
 public class RegistrationController {
 	private static final transient Logger logger = LoggerFactory.getLogger(RegistrationController.class);
@@ -44,8 +42,6 @@ public class RegistrationController {
 	@Autowired
 	private RepositoryManager storageManager;
 
-	@Autowired
-	private PermissionsManager permissionsManager;
 
 	@Autowired
 	private MailSender mailSender;
@@ -79,6 +75,7 @@ public class RegistrationController {
 				logger.error(String.format("login - local profile not found: %s", cf));
 				throw new UnauthorizedException("local profile not found or invalid credentials");
 			}
+
 			String token = jwtUtils.generateToken(profile);
 			profile.setPasswordHash(token);
 //			permissionsManager.authenticateByCF(request, response, profile);
@@ -115,7 +112,7 @@ public class RegistrationController {
 		if (StringUtils.hasText(cellPhone)) {
 			registration.setCellPhone(cellPhone);
 		}
-		if (StringUtils.isEmpty(profile.getMail())) {
+		if (StringUtils.isEmpty(profile.getMail()) || StringUtils.isEmpty(profile.getPec())) {
 			logger.error(String.format("register - profile without email:%s", cf));
 			throw new InvalidDataException("profile without email");
 		}

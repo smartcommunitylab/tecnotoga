@@ -27,6 +27,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -103,7 +104,12 @@ public class MailSender {
 		vars.put("user", reg);
 		vars.put("url", applicationURL + "/confirm?confirmationCode=" + reg.getConfirmationKey());
 		String subject = messageProps.getProperty("confirmation.subject");
-		sendEmail(reg.getMail(), "confirmation_" + lang, subject, vars);
+		if (!StringUtils.isEmpty(reg.getMail())) {
+			sendEmail(reg.getMail(), "confirmation_" + lang, subject, vars);
+		}
+		if (!StringUtils.isEmpty(reg.getPec())) {
+			sendEmail(reg.getPec(), "confirmation_" + lang, subject, vars);
+		}
 	}
 
 	public void sendResetMail(Registration reg) throws RegistrationException {
@@ -129,7 +135,7 @@ public class MailSender {
 			final MimeMessage mimeMessage = mailSender.createMimeMessage();
 			final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			message.setSubject(subject);
-			message.setFrom("TecnoToga <" + mailUser + "@smartcommunitylab.it>");
+			message.setFrom("TecnoToga <" + mailUser + ">");
 			message.setTo(email);
 
 			// Create the HTML body using Thymeleaf
