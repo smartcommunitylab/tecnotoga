@@ -200,6 +200,7 @@ public class RepositoryManager {
 			update.set("type", cnfProfile.getType());
 			update.set("mail", cnfProfile.getMail());
 			update.set("pec", cnfProfile.getPec());
+			update.set("phone", cnfProfile.getPhone());
 			update.set("customProperties", cnfProfile.getCustomProperties());
 			update.set("lastUpdate", now);
 			mongoTemplate.updateFirst(query, update, Professional.class);
