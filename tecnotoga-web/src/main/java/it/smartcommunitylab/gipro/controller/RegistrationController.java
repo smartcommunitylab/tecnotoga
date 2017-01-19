@@ -112,7 +112,7 @@ public class RegistrationController {
 		if (StringUtils.hasText(cellPhone)) {
 			registration.setCellPhone(cellPhone);
 		}
-		if (StringUtils.isEmpty(profile.getMail()) || StringUtils.isEmpty(profile.getPec())) {
+		if (StringUtils.isEmpty(profile.getMail()) && StringUtils.isEmpty(profile.getPec())) {
 			logger.error(String.format("register - profile without email:%s", cf));
 			throw new InvalidDataException("profile without email");
 		}
