@@ -962,7 +962,8 @@ public class RepositoryManager {
 //		}
 		Update update = new Update();
 		update.set("confirmed", Boolean.TRUE);
-		update.set("confirmationKey", null);
+		// keep confirmation key?
+//		update.set("confirmationKey", null);
 		update.set("confirmationDeadline", null);
 		update.set("lastUpdate", now);
 		mongoTemplate.updateFirst(query, update, Registration.class);
